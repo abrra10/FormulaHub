@@ -12,7 +12,7 @@ const Standings = () => {
   }, []);
 
   const fetchStandings = async () => {
-    const apiUrl = "http://ergast.com/api/f1/2024/driverStandings.json";
+    const apiUrl = "https://ergast.com/api/f1/2024/driverStandings.json";
 
     try {
       const response = await axios.get(apiUrl);

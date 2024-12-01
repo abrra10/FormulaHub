@@ -27,7 +27,7 @@ const Drivers = () => {
   };
 
   const fetchDrivers = async () => {
-    const apiUrl = "http://ergast.com/api/f1/2024/drivers.json";
+    const apiUrl = "https://ergast.com/api/f1/2024/drivers.json";
 
     try {
       const response = await axios.get(apiUrl);
