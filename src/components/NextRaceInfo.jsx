@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
 import Countdown from "./Countdown";
+import { Link } from "react-router-dom";
 
 export default function NextRaceInfo() {
   const [nextRace, setNextRace] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const standingsLink = "/standings"; // Link to the standings page
 
   useEffect(() => {
     const fetchRaceData = async () => {
@@ -65,7 +66,22 @@ export default function NextRaceInfo() {
 
           return () => clearInterval(intervalId);
         } else {
-          setTimeRemaining({ message: "No upcoming races." });
+          // Handle no upcoming races with a custom message and link
+          setTimeRemaining({
+            message: (
+              <>
+                <h2 className="text-secondary font-anton text-2xl">
+                  No upcoming races. The 2024 season is complete.
+                </h2>
+                <Link
+                  to="/standings"
+                  className="text-secondary font-anton underline ml-2"
+                >
+                  View the final standings.
+                </Link>
+              </>
+            ),
+          });
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -79,7 +95,7 @@ export default function NextRaceInfo() {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-center font-anton letter-tracking-wide gap-10 py-12 ">
+    <div className="flex flex-col lg:flex-row justify-between items-center font-anton letter-tracking-wide gap-10 py-12">
       <Countdown
         nextRace={nextRace}
         timeRemaining={timeRemaining}
