@@ -141,7 +141,7 @@ const Schedule = () => {
         initial={{ y: 48, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ ease: "easeInOut", duration: 0.75 }}
-        className="mb-4 text-6xl font-bold font-bowlby tracking-wider px-6 text-primary relative after:content-[''] after:block after:w-24 after:h-1 after:bg-secondary after:mt-2 after:mx-auto"
+        className="mb-4 text-5xl font-bold font-bowlby tracking-wider px-6 text-primary relative after:content-[''] after:block after:w-24 after:h-1 after:bg-secondary after:mt-2 after:mx-auto"
       >
         Next Race Schedule
       </motion.h1>

@@ -71,7 +71,7 @@ export default function NextRaceInfo() {
             message: (
               <>
                 <h2 className="text-secondary font-anton text-2xl">
-                  No upcoming races. The 2024 season is complete.
+                  No upcoming races.
                 </h2>
                 <Link
                   to="/standings"
