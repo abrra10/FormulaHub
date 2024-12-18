@@ -31,6 +31,9 @@ import tsunoda from "../assets/drivers/tsunoda.jpg";
 import verstappen from "../assets/drivers/verstappen.jpg";
 import zhou from "../assets/drivers/zhou.jpg";
 
+// Import default image
+import defaultDriverImage from "../assets/drivers/default-driver.jpg";
+
 const driverData = {
   "Alexander Albon": { image: albon, team: "Williams" },
   "Fernando Alonso": { image: alonso, team: "Aston Martin" },
@@ -64,19 +67,19 @@ const DriverCard = ({ name, nationality, permanentNumber }) => {
   // Get the ISO country code from the country name
   const countryCode = countryToIsoCode[countryName] || "US";
 
-  // Resolve the image and team for the driver
+  // Resolve the image and team for the driver, using the default image if none is available
   const { image, team } = driverData[name] || {
-    image: "../assets/default-driver.jpg",
+    image: defaultDriverImage, // Use default image if no driver image is found
     team: "Unknown Team",
   };
 
   return (
-    <div className="card card-side  rounded-none !rounded-tr-lg !important !bg-secondary">
+    <div className="card card-side rounded-none !rounded-tr-lg !important !bg-secondary">
       <figure className="bg-primary flex flex-col items-center">
         {/* Driver's image with hover/focus effect */}
         <img
           src={image}
-          alt={name}
+          alt={name || "Default Driver"}
           className="w-32 h-32 object-cover rounded-lg m-4 transition-transform transform hover:scale-105 hover:brightness-110 focus:scale-105 focus:brightness-110"
         />
 
@@ -101,7 +104,7 @@ const DriverCard = ({ name, nationality, permanentNumber }) => {
 
         <div className="card-actions justify-end">
           <a
-            href={`https://en.wikipedia.org/wiki/${name.replace(" ", "_")}`}
+            href={`https://en.wikipedia.org/wiki/${name?.replace(" ", "_")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="btn rounded-none bg-primary text-secondary hover:opacity-80 !rounded-tr-lg !important"
