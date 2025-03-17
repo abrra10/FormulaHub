@@ -60,27 +60,25 @@ const Drivers = () => {
 
   return (
     <section className="py-auto relative">
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900 z-50">
-          <Spinner />
-        </div>
-      )}
+      <div className="container mx-auto px-4 py-8 mt-8 bg-background">
+        <motion.h1
+          initial={{ y: 48, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ ease: "easeInOut", duration: 0.75 }}
+          className="mb-4 text-4xl lg:text-6xl font-bold font-bowlby tracking-wider px-6 text-primary text-center relative after:content-[''] after:block after:w-24 after:h-1 after:bg-secondary after:mt-2 after:mx-auto"
+        >
+          Drivers
+        </motion.h1>
 
-      {!loading && (
-        <div className="container mx-auto px-4 py-8 mt-8 bg-background">
-          <motion.h1
-            initial={{ y: 48, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ ease: "easeInOut", duration: 0.75 }}
-            className="mb-4 text-4xl lg:text-6xl font-bold font-bowlby tracking-wider px-6 text-primary text-center relative after:content-[''] after:block after:w-24 after:h-1 after:bg-secondary after:mt-2 after:mx-auto"
-          >
-            Drivers
-          </motion.h1>
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
-          {error && <p className="text-red-500 text-center">{error}</p>}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {drivers.map((driver, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {loading ? (
+            <div className="fixed inset-0 flex justify-center items-center bg-background">
+              <Spinner />
+            </div>
+          ) : (
+            drivers.map((driver, index) => (
               <motion.div
                 key={driver.driverId}
                 variants={cardVariants}
@@ -96,10 +94,10 @@ const Drivers = () => {
                   team={driver.team}
                 />
               </motion.div>
-            ))}
-          </div>
+            ))
+          )}
         </div>
-      )}
+      </div>
     </section>
   );
 };
