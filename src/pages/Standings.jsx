@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Spinner from "../components/Spinner";
+import { API_ENDPOINTS } from "../config/api";
 
 const Standings = () => {
   const [standings, setStandings] = useState([]);
@@ -13,18 +14,27 @@ const Standings = () => {
   }, []);
 
   const fetchStandings = async () => {
-    const apiUrl = "https://ergast.com/api/f1/current/driverStandings.json";
-
     try {
-      const response = await axios.get(apiUrl);
-      const standingsData =
-        response.data.MRData.StandingsTable.StandingsLists[0]
-          ?.DriverStandings || [];
+      const response = await axios.get(API_ENDPOINTS.STANDINGS);
+      const standingsData = response.data.standings; // Note: different structure
 
       setStandings(standingsData);
       setLoading(false);
     } catch (error) {
-      setError(`Fetch error: ${error.message}`);
+      if (error.response) {
+        // Server responded with error status
+        setError(
+          `Server error: ${
+            error.response.data.detail || error.response.statusText
+          }`
+        );
+      } else if (error.request) {
+        // Network error
+        setError("Network error: Unable to connect to server");
+      } else {
+        // Other error
+        setError(`Error: ${error.message}`);
+      }
       setLoading(false);
     }
   };
@@ -39,7 +49,7 @@ const Standings = () => {
   };
 
   return (
-    <section className="py-auto">
+    <section className="py-auto bg-background">
       <div className="container mx-auto px-4 pt-20">
         <div className="text-center mb-8">
           <motion.h1
@@ -72,7 +82,7 @@ const Standings = () => {
               <tbody className="text-primary font-anton">
                 {standings.map((driver, index) => (
                   <motion.tr
-                    key={driver.Driver.driverId || index}
+                    key={driver.driver.driverId || index}
                     variants={rowVariants}
                     initial="hidden"
                     animate="visible"
@@ -83,15 +93,15 @@ const Standings = () => {
                       <div className="flex items-center space-x-3">
                         <div>
                           <div className="font-bold">
-                            {driver.Driver.givenName}
+                            {driver.driver.givenName}
                           </div>
                           <div className="text-sm opacity-70">
-                            {driver.Driver.familyName}
+                            {driver.driver.familyName}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td>{driver.Constructors[0]?.name || "Unknown Team"}</td>
+                    <td>{driver.constructor.name || "Unknown Team"}</td>
                     <td className="text-secondary text-sm sm:text-base lg:text-lg transition-transform transform hover:scale-125 focus:scale-125">
                       {driver.points} PTS
                     </td>

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import DriverCard from "../components/DriverCard";
-import Spinner from "../components/Spinner"; // Import Spinner
+import Spinner from "../components/Spinner";
+import { API_ENDPOINTS } from "../config/api";
 
 const Drivers = () => {
   const [drivers, setDrivers] = useState([]);
@@ -25,22 +26,33 @@ const Drivers = () => {
   };
 
   const fetchDrivers = async () => {
-    const apiUrl = "https://ergast.com/api/f1/2024/drivers.json";
-
     try {
-      const response = await axios.get(apiUrl);
-      const driversData = response.data.MRData.DriverTable.Drivers;
+      const response = await axios.get(API_ENDPOINTS.DRIVERS);
+      const driversData = response.data.drivers; // Note: different structure
 
       const driversWithDetails = driversData.map((driver) => ({
         ...driver,
-        portrait: driverPortraits[driver.driverId] || placeholderImage,
-        team: teams[driver.driverId] || "Unknown",
+        portrait: driver.portraitUrl || placeholderImage,
+        team: driver.team || "Unknown",
       }));
 
       setDrivers(driversWithDetails);
       setLoading(false);
     } catch (error) {
-      setError(`Fetch error: ${error.message}`);
+      if (error.response) {
+        // Server responded with error status
+        setError(
+          `Server error: ${
+            error.response.data.detail || error.response.statusText
+          }`
+        );
+      } else if (error.request) {
+        // Network error
+        setError("Network error: Unable to connect to server");
+      } else {
+        // Other error
+        setError(`Error: ${error.message}`);
+      }
       setLoading(false);
     }
   };

@@ -1,24 +1,7 @@
 import React, { useEffect } from "react";
 import { HiOutlineLocationMarker } from "react-icons/hi";
-export default function Countdown({
-  nextRace,
-  timeRemaining,
-  loading,
-  error,
-  onLocationUpdate,
-}) {
-  useEffect(() => {
-    if (
-      nextRace &&
-      nextRace.Circuit &&
-      nextRace.Circuit.Location &&
-      onLocationUpdate
-    ) {
-      const { locality, country } = nextRace.Circuit.Location;
-      onLocationUpdate({ locality, country });
-    }
-  }, [nextRace, onLocationUpdate]);
 
+export default function Countdown({ nextRace, timeRemaining, loading, error }) {
   return (
     <div className="px-4 py-8 lg:px-12 lg:py-14 rounded w-full flex flex-col lg:flex-row items-center justify-center gap-8">
       {loading ? (
@@ -41,13 +24,11 @@ export default function Countdown({
                 <p>
                   <span className="font-bold ">{nextRace.raceName} at</span>{" "}
                 </p>
-                <h2 className="font-bold text-4xl">
-                  {nextRace.Circuit.circuitName}
-                </h2>
+                <h2 className="font-bold text-4xl">{nextRace.circuitName}</h2>
                 <h2 className="flex items-center gap-2 font-bold text-4xl px-10 py-4 text-secondary">
-                  {nextRace.Circuit.Location.locality},{" "}
+                  {nextRace.locality},{" "}
                   <span className="flex items-center gap-2 ">
-                    {nextRace.Circuit.Location.country}
+                    {nextRace.country}
                     <HiOutlineLocationMarker className="text-4xl text-secondary" />
                   </span>
                 </h2>
