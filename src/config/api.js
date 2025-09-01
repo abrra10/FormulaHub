@@ -1,9 +1,9 @@
 // API Configuration for FormulaHub
-// Change this URL when deploying to Cloudflare Workers
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
-
-// For Cloudflare Workers deployment, use:
-// const API_BASE_URL = "https://formulahub-api.your-subdomain.workers.dev";
+// Production: Render backend, Development: localhost
+const isDevelopment = import.meta.env.DEV;
+const API_BASE_URL = isDevelopment
+  ? "http://localhost:8000"
+  : "https://f1-backend-dm42.onrender.com";
 
 export const API_ENDPOINTS = {
   DRIVERS: `${API_BASE_URL}/api/drivers`,
